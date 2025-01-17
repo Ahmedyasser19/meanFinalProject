@@ -6,10 +6,13 @@
       placeholder="Search here..."
       style="width: 200px"
     />
-    <button>add</button>
+    <button routerLink="/products/add">add</button>
   </div>
 
   <main style="margin-top: 20px">
-    <app-product-card *ngFor="let card of cards"></app-product-card>
+    <app-product-card
+      *ngFor="let card of cards"
+      [product]="card"
+    ></app-product-card>
   </main>
 </div>

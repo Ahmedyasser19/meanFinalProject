@@ -1,7 +1,12 @@
 import productModel from "../models/product.js";
 
-export function getAllProducts(req, res) {
-  res.send("Register route working!");
+export async function getAllProducts(req, res) {
+  try {
+    const products = await productModel.find();
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching products" });
+  }
 }
 export async function addNewProduct(req, res) {
   try {
@@ -22,7 +27,23 @@ export async function addNewProduct(req, res) {
   }
 }
 export function updateProduct(req, res) {
-  res.send("Register route working!");
+  try {
+    const productId = req.params.id;
+    const { name, desc, price, imageUrl } = req.body;
+    const updatedProduct = productModel.findByIdAndUpdate(
+      productId,
+      {
+        name,
+        desc,
+        price,
+        imageUrl,
+      },
+      { new: true }
+    );
+    res.json(updatedProduct);
+  } catch (error) {
+    res.status(500).json({ error: "Unable to update product" });
+  }
 }
 export async function deleteProduct(req, res) {
   try {

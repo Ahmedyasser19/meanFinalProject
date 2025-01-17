@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-
+import { Component, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Product } from '../../interface/product';
 @Component({
   selector: 'app-edit-product',
   standalone: true,
@@ -8,10 +9,17 @@ import { Component } from '@angular/core';
   styleUrl: './edit-product.component.css',
 })
 export class EditProductComponent {
-  imageUrl: string | ArrayBuffer | null = null;
-  username: string = '';
-  price: string = '';
-  description: string = '';
+  route: ActivatedRoute = inject(ActivatedRoute);
+  product: Product = {
+    id: '',
+    name: '',
+    price: 0,
+    description: '',
+    image: '', // Initialize with null for the image
+  };
+  constructor() {
+    this.product.id = String(this.route.snapshot.paramMap.get('id'));
+  }
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -21,7 +29,7 @@ export class EditProductComponent {
 
       const reader = new FileReader();
       reader.onload = () => {
-        this.imageUrl = reader.result; // Set the imageUrl to the file's data URL
+        this.product.image = String(reader.result); // Set the imageUrl to the file's data URL
       };
       reader.readAsDataURL(file); // Read the file as a Data URL
     }

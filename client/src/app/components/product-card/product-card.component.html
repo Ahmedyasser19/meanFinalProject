@@ -1,15 +1,14 @@
 <div class="cardContainer">
-  <button class="editButton">Edit</button>
-  <img src="" alt="img" style="width: 100%; height: 50%" />
+  <button class="editButton" [routerLink]="['/products/edit/', product.id]">
+    Edit
+  </button>
+  <img src="{{ product.image }}" alt="img" style="width: 100%; height: 50%" />
   <div style="display: flex; justify-content: space-between">
-    <p>name</p>
-    <p>140$</p>
+    <p>{{ product.name }}</p>
+    <p>{{ product.price }}$</p>
   </div>
 
   <p class="desc">
-    descriptionasdasdsadasd asdaasdasdasdasdasd asdaasdasdasdasdasd
-    asdaasdasdasdasdasd asdaasdasdasdasdasd asdaasdasdasdasdasd
-    asdaasdasdasdasdasd asdaasdasdasdasdasd asdaasdasdasdasdasd
-    asdaasdasdasdasdasd asdaasdasdasdasdasd
+    {{ product.description }}
   </p>
 </div>

@@ -3,11 +3,11 @@ import { RouterOutlet } from '@angular/router';
 import { Router } from '@angular/router';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { NgFor, NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavBarComponent, FooterComponent, NgIf, NgFor],
+  imports: [RouterOutlet, NavBarComponent, FooterComponent, NgIf],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
