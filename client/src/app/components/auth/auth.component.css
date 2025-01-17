@@ -1,0 +1,15 @@
+.auth {
+  width: 90vw;
+  padding: 40px 20px;
+  border-radius: 15px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+@media only screen and (min-width: 768px) {
+  .auth {
+    width: 600px;
+  }
+}
+
+/* @media only screen and (min-width: 992px) {
+  
+} */

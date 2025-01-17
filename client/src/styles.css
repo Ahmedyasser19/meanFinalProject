@@ -1,1 +1,79 @@
-/* You can add global styles to this file, and also import other style files */
+@font-face {
+  font-family: sourceLight;
+  src: url(../public/fonts/SourceSans3-Light.ttf);
+}
+@font-face {
+  font-family: sourceRegular;
+  src: url(../public/fonts/SourceSans3-Regular.ttf);
+}
+@font-face {
+  font-family: sourceBold;
+  src: url(../public/fonts/SourceSans3-Bold.ttf);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3 {
+  font-family: sourceBold;
+}
+
+p,
+div,
+button,
+span {
+  font-family: sourceRegular;
+}
+
+.flexCol {
+  display: flex;
+  flex-direction: column;
+}
+.flexRow {
+  display: flex;
+  flex-direction: row;
+}
+
+.spacebetween {
+  justify-content: space-between;
+}
+
+button {
+  background-color: rgb(62, 109, 249);
+  height: fit-content;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  font-size: large;
+}
+
+.content {
+  flex-grow: 1;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+.gap10 {
+  gap: 10px;
+}
+.gap5 {
+  gap: 5px;
+}
+.gap15 {
+  gap: 15px;
+}
+
+input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+}

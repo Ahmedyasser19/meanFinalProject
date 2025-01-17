@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
-
+import { Component, Input } from '@angular/core';
+import { ProfileComponent } from '../svg/profile/profile.component';
 @Component({
   selector: 'app-nav-bar',
   standalone: true,
-  imports: [],
+  imports: [ProfileComponent],
   templateUrl: './nav-bar.component.html',
-  styleUrl: './nav-bar.component.css'
+  styleUrl: './nav-bar.component.css',
 })
 export class NavBarComponent {
-
+  @Input() receivePath: string = '';
 }

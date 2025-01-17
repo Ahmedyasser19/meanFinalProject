@@ -1,1 +1,22 @@
-<p>auth works!</p>
+<form class="auth flexCol gap10">
+  <h1 style="margin: 0 auto">{{ receiveName }}</h1>
+  <div>
+    <label for="username">Email</label>
+    <input type="text" placeholder="username" v-model="username" />
+  </div>
+
+  <div>
+    <label for="password">Password</label>
+    <input type="password" placeholder="password" v-model="password" />
+    <input
+      *ngIf="isRegistering"
+      type="password"
+      placeholder="confirm password"
+      v-model="password"
+      style="margin-top: 5px"
+    />
+  </div>
+  <button>
+    {{ receiveName }}
+  </button>
+</form>
