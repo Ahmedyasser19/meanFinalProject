@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-edit-product',
+  selector: 'app-add-product',
   standalone: true,
   imports: [],
-  templateUrl: './edit-product.component.html',
-  styleUrl: './edit-product.component.css',
+  templateUrl: './add-product.component.html',
+  styleUrl: './add-product.component.css',
 })
-export class EditProductComponent {
+export class AddProductComponent {
   imageUrl: string | ArrayBuffer | null = null;
   username: string = '';
   price: string = '';
