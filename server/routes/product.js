@@ -4,12 +4,14 @@ import {
   addNewProduct,
   updateProduct,
   deleteProduct,
-} from "../controllers/product";
+} from "../controllers/product.js";
+
+import authenticateToken from "../middleware/isAuthenticated.js";
 
 const router = Router();
-router.get("/");
-router.post("/");
-router.put("/:id");
-router.delete("/:id");
+router.get("/", getAllProducts);
+router.post("/", authenticateToken, addNewProduct);
+router.put("/:id", authenticateToken, updateProduct);
+router.delete("/:id", authenticateToken, deleteProduct);
 
-module.exports = router;
+export default router;

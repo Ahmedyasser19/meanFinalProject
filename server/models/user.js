@@ -1,6 +1,6 @@
-import mongose from "mongoose";
+import mongoose from "mongoose";
 
-const schema = new mongose.Schema({
+const schema = new mongoose.Schema({
   id: {
     type: String,
     required: true,
@@ -12,16 +12,18 @@ const schema = new mongose.Schema({
   },
   jwt: {
     type: String,
-    required: true,
   },
   email: {
     type: String,
     required: true,
     unique: true,
   },
-  products: [],
+  products: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "productModel",
+    },
+  ],
 });
 
-schema.statics.createUser = function () {};
-
-module.exports = mongoose.models.schema || mongoose.model("userModel", schema);
+export default mongoose.models.userModel || mongoose.model("userModel", schema);

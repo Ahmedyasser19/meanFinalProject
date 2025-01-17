@@ -1,6 +1,6 @@
-import mongose from "mongoose";
+import mongoose from "mongoose";
 
-const schema = new mongose.Schema({
+const schema = new mongoose.Schema({
   id: {
     type: String,
     required: true,
@@ -20,9 +20,16 @@ const schema = new mongose.Schema({
   imageUrl: {
     type: String,
   },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "userModel",
+    required: true,
+  },
 });
 
-schema.statics.createProduct = function () {};
+schema.statics.createProduct = function (productData) {
+  return this.create(productData);
+};
 
-module.exports =
-  mongoose.models.schema || mongoose.model("productModel", schema);
+export default mongoose.models.productModel ||
+  mongoose.model("productModel", schema);
