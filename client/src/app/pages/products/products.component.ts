@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { Product } from '../../interface/product';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment.development';
+import { ProductService } from '../../service/product.service';
 @Component({
   selector: 'app-products',
   standalone: true,
@@ -15,40 +16,39 @@ import { environment } from '../../../environments/environment.development';
 export class ProductsComponent implements OnInit {
   cards: Array<Product> = [
     {
-      id: '1',
+      _id: '1',
       name: 'Product 1',
       price: 10,
-      description: 'This is product 1',
-      image: 'https://picsum.photos/200/300',
+      desc: 'This is product 1',
+      imageUrl: 'https://picsum.photos/200/300',
     },
     {
-      id: '2',
+      _id: '2',
       name: 'Product 1',
       price: 10,
-      description: 'This is product 1',
-      image: 'https://picsum.photos/200/300',
+      desc: 'This is product 1',
+      imageUrl: 'https://picsum.photos/200/300',
     },
     {
-      id: '3',
+      _id: '3',
       name: 'Product 1',
       price: 10,
-      description: 'This is product 1',
-      image: 'https://picsum.photos/200/300',
+      desc: 'This is product 1',
+      imageUrl: 'https://picsum.photos/200/300',
     },
     {
-      id: '3',
+      _id: '3',
       name: 'Product 1',
       price: 10,
-      description: 'This is product 1',
-      image: 'https://picsum.photos/200/300',
+      desc: 'This is product 1',
+      imageUrl: 'https://picsum.photos/200/300',
     },
   ];
-  http = inject(HttpClient);
+constructor(private productSer:ProductService){}
   ngOnInit(): void {
-    this.http.get(environment.apiURL + 'products').subscribe((res:any)=>{
-      // this.cards = res.data
+    this.productSer.getAllProducts().subscribe((res:any)=>{
+      this.cards = res;
       console.log(res);
-
     });
   }
 }

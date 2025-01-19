@@ -11,14 +11,14 @@ import { Product } from '../../interface/product';
 export class EditProductComponent {
   route: ActivatedRoute = inject(ActivatedRoute);
   product: Product = {
-    id: '',
+    _id: '',
     name: '',
     price: 0,
-    description: '',
-    image: '', // Initialize with null for the image
+    desc: '',
+    imageUrl: '', // Initialize with null for the image
   };
   constructor() {
-    this.product.id = String(this.route.snapshot.paramMap.get('id'));
+    this.product._id = String(this.route.snapshot.paramMap.get('id'));
   }
 
   onFileSelected(event: Event): void {
@@ -29,7 +29,7 @@ export class EditProductComponent {
 
       const reader = new FileReader();
       reader.onload = () => {
-        this.product.image = String(reader.result); // Set the imageUrl to the file's data URL
+        this.product.imageUrl = String(reader.result); // Set the imageUrl to the file's data URL
       };
       reader.readAsDataURL(file); // Read the file as a Data URL
     }

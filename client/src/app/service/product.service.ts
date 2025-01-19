@@ -13,13 +13,21 @@ export class ProductService {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
   });
 
-  getProduct(): Observable<any> {
-    return this.http.get(environment.apiURL + 'products');
+  getAllProducts(): Observable<any> {
+    return  this.http.get(environment.apiURL + 'products');
+  }
+
+  getProduct(id:string): Observable<any> {
+    return  this.http.get(environment.apiURL + 'products/'+id);
   }
 
   addProduct(model: Product): Observable<any> {
-    return this.http.post(environment.apiURL + 'products', model, {
-      headers: this.httpHeaders,
-    });
+    return model._id
+      ? this.http.put(environment.apiURL + 'products/' + model._id, model, {
+          headers: this.httpHeaders,
+        })
+      : this.http.post(environment.apiURL + 'products', model, {
+          headers: this.httpHeaders,
+        });
   }
 }

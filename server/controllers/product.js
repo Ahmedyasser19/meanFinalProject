@@ -8,6 +8,15 @@ export async function getAllProducts(req, res) {
     res.status(500).json({ message: "Error fetching products" });
   }
 }
+export async function getProduct(req, res) {
+  try {    
+    const { id } = req.params;
+    const product = await productModel.findById(id);
+    res.json(product);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching products" });
+  }
+}
 export async function addNewProduct(req, res) {
   try {
     const { name, desc, price, imageUrl } = req.body;

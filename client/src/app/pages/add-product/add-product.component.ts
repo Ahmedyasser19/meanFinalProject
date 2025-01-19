@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -7,6 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ProductService } from '../../service/product.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-add-product',
@@ -22,17 +23,29 @@ export class AddProductComponent implements OnInit {
   productForm!: FormGroup;
   constructor(
     private formBulder: FormBuilder,
-    private productSer: ProductService
+    private productSer: ProductService,
+    private route: ActivatedRoute
   ) {}
+
   ngOnInit(): void {
     this.profile = localStorage.getItem('porofile');
-
-    this.productForm = this.formBulder.group({
-      name: ['', [Validators.required]],
-      desc: ['', []],
-      price: ['', [Validators.required]],
-      imageUrl: ['', []],
-      owner: [JSON.parse(this.profile)['id'], [Validators.required]],
+    this.route.params.subscribe({
+      next: (params: any) => {
+        const id = params.id;
+        this.productForm = this.formBulder.group({
+          _id:[null,[]],
+          name: [null, [Validators.required]],
+          desc: [null, []],
+          price: [null, [Validators.required]],
+          imageUrl: [null, []],
+          owner: [JSON.parse(this.profile)['id'], [Validators.required]],
+        });
+        if (id) {
+          this.productSer.getProduct(id).subscribe((response)=>{
+            this.productForm.patchValue(response);
+          });
+        }
+      },
     });
   }
 

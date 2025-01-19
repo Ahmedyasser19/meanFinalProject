@@ -10,10 +10,10 @@ import { Product } from '../../interface/product';
 })
 export class ProductCardComponent {
   @Input() product: Product = {
-    id: '',
+    _id: '',
     name: '',
     price: 0,
-    description: '',
-    image: '',
+    desc: '',
+    imageUrl: '',
   };
 }
