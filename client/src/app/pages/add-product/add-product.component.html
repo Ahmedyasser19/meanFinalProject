@@ -1,3 +1,5 @@
+
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()" >
 <main style="display: flex; flex-grow: 1; flex-direction: column" class="gap15">
   <div style="width: 100vw; height: 500px">
     <img
@@ -18,13 +20,13 @@
   </div>
 
   <div>
-    <label for="username">Name</label>
-    <input type="text" placeholder="change name" v-model="username" />
+    <label for="name">Name</label>
+    <input id="name" type="text" placeholder="change name" name="name" formControlName="name" />
   </div>
 
   <div>
-    <label for="username">price</label>
-    <input type="text" placeholder="change price" v-model="username" />
+    <label for="price">price</label>
+    <input type="text" id="price" placeholder="change price" formControlName="price" name="price" />
   </div>
 
   <div>
@@ -34,11 +36,14 @@
     <textarea
       type="textarea"
       placeholder="description"
-      v-model="textarea"
+      formControlName="desc"
+      id="desc"
       rows="10"
       style="width: 100vw"
     ></textarea>
   </div>
 
-  <button>add</button>
+  <button type="submit">add</button>
 </main>
+
+</form>

@@ -13,13 +13,14 @@ export async function addNewProduct(req, res) {
     const { name, desc, price, imageUrl } = req.body;
     const ownerId = req.user.id; // Assuming `req.user` is set by middleware
 
-    const product = await productModel.create({
+    const product = new productModel({
       name,
       desc,
       price,
       imageUrl,
       owner: ownerId,
     });
+    await product.save();
 
     res.status(201).json(product);
   } catch (error) {

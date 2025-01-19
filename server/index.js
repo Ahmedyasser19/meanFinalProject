@@ -19,9 +19,9 @@ mongoose
 app.use(express.json());
 app.use(cors());
 app.use("/api/auth", authRoute);
-// app.use("/api/products", productRoute);
+app.use("/api/products", productRoute);
 
-app.listen(3000, () => {
+app.listen(3001, () => {
   console.log(
     `Server running on ${env === "local" ? "http://localhost:3000" : ""}`
   );

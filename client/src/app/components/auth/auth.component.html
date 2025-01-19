@@ -1,22 +1,22 @@
-<form class="auth flexCol gap10">
+<form class="auth flexCol gap10"  [formGroup]="authForm" (ngSubmit)="onSubmit()" >
   <h1 style="margin: 0 auto">{{ receiveName }}</h1>
   <div>
-    <label for="username">Email</label>
-    <input type="text" placeholder="username" v-model="username" />
+    <label for="email">Email</label>
+    <input id="email" type="text" placeholder="email" name="email" formControlName="email" />
   </div>
 
   <div>
     <label for="password">Password</label>
-    <input type="password" placeholder="password" v-model="password" />
+    <input type="password" placeholder="password" name="pw" formControlName="pw" />
     <input
       *ngIf="isRegistering"
       type="password"
       placeholder="confirm password"
-      v-model="password"
+      formControlName="pw"
       style="margin-top: 5px"
     />
   </div>
-  <button>
+  <button type="submit">
     {{ receiveName }}
   </button>
 </form>

@@ -5,8 +5,8 @@
     <div class="flexRow">
       <app-profile></app-profile>
       <div class="flexCol">
-        <p>ahmed Yasser</p>
-        <p>ahmedyasser&#64;coco.com</p>
+        <p>{{ user.name == null ? "Software Engineer" : user.name }}</p>
+        <p>{{ user.email }}</p>
       </div>
     </div>
   </div>
