@@ -7,13 +7,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { ProductService } from '../../service/product.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-add-product',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, CommonModule],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule, RouterLink],
   templateUrl: './add-product.component.html',
   styleUrl: './add-product.component.css',
 })
@@ -22,7 +22,7 @@ export class AddProductComponent implements OnInit {
   imageUrl: string | ArrayBuffer | null = null;
   errorMessage: string = ''; // Variable to store error messages
   successMessage: string = ''; // Variable to store success messages
-
+  id!: string;
   productForm!: FormGroup;
   constructor(
     private formBulder: FormBuilder,
@@ -32,11 +32,23 @@ export class AddProductComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.productForm = this.formBulder.group({
-      name: ['', [Validators.required]],
-      desc: ['', []],
-      price: ['', [Validators.required]],
-      file: ['', []],
+    this.route.params.subscribe({
+      next: (params: any) => {
+        this.id = params.id;
+        this.productForm = this.formBulder.group({
+          name: ['', [Validators.required]],
+          desc: ['', []],
+          price: ['', [Validators.required]],
+          file: ['', []],
+        });
+        if (this.id) {
+          const queryParams = this.route.snapshot.queryParamMap;
+          this.productSer.getProduct(this.id).subscribe((response) => {
+            this.productForm.patchValue(response);
+            this.imageUrl = queryParams.get('imageUrl') || '';
+          });
+        }
+      },
     });
   }
 
@@ -66,14 +78,17 @@ export class AddProductComponent implements OnInit {
         formData.append('image', this.file);
       }
 
-      this.productSer.addProduct(formData).subscribe(
-        (res: any) => {
+      this.productSer.addProduct(formData, this.id).subscribe({
+        next: (res: any) => {
           this.successMessage = 'Product added successfully!';
           this.errorMessage = '';
           this.productForm.reset();
           this.imageUrl = null;
+          setTimeout(() => {
+            this.router.navigateByUrl('/products');
+          }, 1000);
         },
-        (error) => {
+        error: (error) => {
           if (error.status === 401) {
             this.errorMessage = 'Unauthorized. Please log in again.';
           } else {
@@ -81,10 +96,25 @@ export class AddProductComponent implements OnInit {
               error.error?.message || 'An error occurred. Please try again.';
           }
           this.successMessage = '';
-        }
-      );
+        },
+      });
     } else {
       this.errorMessage = 'Please fill out all required fields.';
+    }
+  }
+
+  removeProduct() {
+    const conf = confirm('are You Shore od Delete Product');
+    if (conf) {
+      this.productSer.removeProduct(this.id).subscribe({
+        next: () => {
+          this.errorMessage = 'the Product are Deleted';
+          setTimeout(() => {
+            this.router.navigateByUrl('/products');
+          }, 1000);
+        },
+        error: () => {},
+      });
     }
   }
 }

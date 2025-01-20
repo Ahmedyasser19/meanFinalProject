@@ -104,7 +104,7 @@ export class EditProductComponent implements OnInit {
         formData.append('image', this.file); // Add new file if selected
       }
 
-      this.productService.updateProduct(this.product._id, formData).subscribe(
+      this.productService.addProduct( formData,this.product._id,).subscribe(
         (res) => {
           this.successMessage = 'Product updated successfully!';
           this.errorMessage = '';

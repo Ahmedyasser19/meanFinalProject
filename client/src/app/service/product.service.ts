@@ -18,20 +18,24 @@ export class ProductService {
   }
 
   getAllProducts(): Observable<any> {
-    return  this.http.get(environment.apiURL + 'products');
+    return this.http.get(environment.apiURL + 'products');
   }
 
-  getProduct(id:string): Observable<any> {
-    return  this.http.get(environment.apiURL + 'products/'+id);
+  getProduct(id: string): Observable<any> {
+    return this.http.get(environment.apiURL + 'products/' + id);
   }
 
-    addProduct(model: FormData, productId?: string ): Observable<any> {
-        return productId
-            ? this.http.put(environment.apiURL + 'products/' + productId, model, {
-                headers: this.getHttpHeaders(),
+  addProduct(model: FormData, productId?: string): Observable<any> {
+    return productId
+      ? this.http.put(environment.apiURL + 'products/' + productId, model, {
+          headers: this.getHttpHeaders(),
         })
       : this.http.post(environment.apiURL + 'products', model, {
           headers: this.getHttpHeaders(),
         });
+  }
+
+  removeProduct(productId: string): Observable<any> {
+    return this.http.delete(environment.apiURL + 'products/' + productId);
   }
 }

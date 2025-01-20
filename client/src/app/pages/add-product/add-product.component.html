@@ -1,3 +1,5 @@
+<div>
+  <button routerLink="/products">Go Back</button></div>
 <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
   <main
     style="display: flex; flex-grow: 1; flex-direction: column"
@@ -66,5 +68,6 @@
     </div>
 
     <button type="submit">Add</button>
+    <button *ngIf="id" class="danger" (click)="removeProduct()">remove</button>
   </main>
 </form>
