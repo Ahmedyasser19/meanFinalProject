@@ -52,6 +52,7 @@
     <div *ngIf="errorMessage" style="color: red">{{ errorMessage }}</div>
     <div *ngIf="successMessage" style="color: green">{{ successMessage }}</div>
     <button type="submit">Update</button>
-    <button type="">delete</button>
+    <button  class="danger" (click)="removeProduct()">remove</button>
+
   </form>
 </main>

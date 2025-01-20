@@ -125,4 +125,18 @@ export class EditProductComponent implements OnInit {
       this.errorMessage = 'Please fill out all required fields.';
     }
   }
+  removeProduct() {
+    const conf = confirm('are You Shore od Delete Product');
+    if (conf) {
+      this.productService.removeProduct(this.product._id).subscribe({
+        next: () => {
+          this.errorMessage = 'the Product are Deleted';
+          setTimeout(() => {
+            this.router.navigateByUrl('/products');
+          }, 1000);
+        },
+        error: () => {},
+      });
+    }
+  }
 }
