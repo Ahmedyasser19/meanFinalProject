@@ -25,7 +25,7 @@ export class ProductService {
     return  this.http.get(environment.apiURL + 'products/'+id);
   }
 
-    addProduct(productId?: stringو model: FormData): Observable<any> {
+    addProduct(model: FormData, productId?: string ): Observable<any> {
         return productId
             ? this.http.put(environment.apiURL + 'products/' + productId, model, {
                 headers: this.getHttpHeaders(),

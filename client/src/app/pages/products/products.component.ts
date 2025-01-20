@@ -31,7 +31,6 @@ export class ProductsComponent implements OnInit {
     } finally {
       this.isLoading = false;
     }
-    });
 }
 
 //constructor(private productSer: ProductService){ }
