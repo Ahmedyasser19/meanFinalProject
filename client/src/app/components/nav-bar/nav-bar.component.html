@@ -3,11 +3,16 @@
 
   <div>
     <div class="flexRow">
+      @if(user==null){
+        <button routerLink="/login">login</button>
+      }
+      @else {
       <app-profile></app-profile>
       <div class="flexCol">
-        <p>{{ user.name == null ? "Software Engineer" : user.name }}</p>
-        <p>{{ user.email }}</p>
+        <p>{{ user?.name == null ? "Software Engineer" : user.name }}</p>
+        <p>{{ user?.email }}</p>
       </div>
+    }
     </div>
   </div>
 </div>

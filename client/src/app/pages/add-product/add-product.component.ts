@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ProductService } from '../../service/product.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-product',
@@ -24,7 +24,8 @@ export class AddProductComponent implements OnInit {
   constructor(
     private formBulder: FormBuilder,
     private productSer: ProductService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -33,7 +34,7 @@ export class AddProductComponent implements OnInit {
       next: (params: any) => {
         const id = params.id;
         this.productForm = this.formBulder.group({
-          _id:[null,[]],
+          _id: [null, []],
           name: [null, [Validators.required]],
           desc: [null, []],
           price: [null, [Validators.required]],
@@ -41,7 +42,7 @@ export class AddProductComponent implements OnInit {
           owner: [JSON.parse(this.profile)['id'], [Validators.required]],
         });
         if (id) {
-          this.productSer.getProduct(id).subscribe((response)=>{
+          this.productSer.getProduct(id).subscribe((response) => {
             this.productForm.patchValue(response);
           });
         }
@@ -67,11 +68,17 @@ export class AddProductComponent implements OnInit {
     console.log(this.productForm.value);
 
     if (this.productForm.valid) {
-      this.productSer
-        .addProduct(this.productForm.value)
-        .subscribe((res: any) => {
+      this.productSer.addProduct(this.productForm.value).subscribe(
+        (res: any) => {
           console.log(res);
-        });
+        },
+        (error) => {
+         if(error.status == 403){
+          localStorage.clear();
+          this.router.navigateByUrl("/login")
+         }
+        }
+      );
     }
   }
 }

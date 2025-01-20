@@ -9,13 +9,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { routes } from '../../app.routes';
 import { environment } from '../../../environments/environment.development';
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [NgIf, CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [NgIf, CommonModule, ReactiveFormsModule, FormsModule,RouterLink],
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.css',
 })

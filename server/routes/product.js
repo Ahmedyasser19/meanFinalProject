@@ -12,6 +12,7 @@ import uploadImage from "../middleware/upload.js";
 
 const router = Router();
 router.get("/", getAllProducts);
+router.get("/:id", getProduct);
 router.post("/", authenticateToken, uploadImage, addNewProduct);
 router.put("/:id", authenticateToken, uploadImage, updateProduct);
 router.delete("/:id", authenticateToken, deleteProduct);
