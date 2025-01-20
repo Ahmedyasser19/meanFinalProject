@@ -67,7 +67,7 @@
       {{ successMessage }}
     </div>
 
-    <button type="submit">Add</button>
+    <button type="submit">{{id?"update":"Add" }}</button>
     <button *ngIf="id" class="danger" (click)="removeProduct()">remove</button>
   </main>
 </form>

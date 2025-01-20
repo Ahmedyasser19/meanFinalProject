@@ -39,7 +39,7 @@ export class AddProductComponent implements OnInit {
           name: ['', [Validators.required]],
           desc: ['', []],
           price: ['', [Validators.required]],
-          file: ['', []],
+          file: [''],
         });
         if (this.id) {
           const queryParams = this.route.snapshot.queryParamMap;
@@ -67,6 +67,8 @@ export class AddProductComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log(this.productForm.valid);
+    console.log(this.productForm.controls);
     if (this.productForm.valid) {
       const formData = new FormData();
       formData.append('name', this.productForm.get('name')?.value);
