@@ -1,7 +1,11 @@
 export interface Product {
-  id: string;
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
+  owner: string;
   name: string;
+  desc: string;
   price: number;
-  description: string | null;
-  image: string | null;
+  description: string;
+  imageUrl: string | null;
 }

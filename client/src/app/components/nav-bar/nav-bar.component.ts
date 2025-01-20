@@ -11,7 +11,6 @@ export class NavBarComponent {
   @Input() receivePath: string = '';
   user: any;
   constructor() {
-    this.user = localStorage.getItem('porofile');
-    this.user = JSON.parse(this.user);
+    this.user = localStorage.getItem('email');
   }
 }

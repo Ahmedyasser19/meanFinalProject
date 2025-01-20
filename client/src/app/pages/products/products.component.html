@@ -14,5 +14,6 @@
       *ngFor="let card of cards"
       [product]="card"
     ></app-product-card>
+    <div *ngIf="!isLoading && cards.length === 0">No products available.</div>
   </main>
 </div>

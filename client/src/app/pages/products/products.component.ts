@@ -1,54 +1,34 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ProductCardComponent } from '../../components/product-card/product-card.component';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Product } from '../../interface/product';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment.development';
+import { lastValueFrom } from 'rxjs';
+
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [ProductCardComponent, NgFor, RouterModule],
+  imports: [ProductCardComponent, NgFor, RouterModule, NgIf],
   templateUrl: './products.component.html',
   styleUrl: './products.component.css',
 })
 export class ProductsComponent implements OnInit {
-  cards: Array<Product> = [
-    {
-      id: '1',
-      name: 'Product 1',
-      price: 10,
-      description: 'This is product 1',
-      image: 'https://picsum.photos/200/300',
-    },
-    {
-      id: '2',
-      name: 'Product 1',
-      price: 10,
-      description: 'This is product 1',
-      image: 'https://picsum.photos/200/300',
-    },
-    {
-      id: '3',
-      name: 'Product 1',
-      price: 10,
-      description: 'This is product 1',
-      image: 'https://picsum.photos/200/300',
-    },
-    {
-      id: '3',
-      name: 'Product 1',
-      price: 10,
-      description: 'This is product 1',
-      image: 'https://picsum.photos/200/300',
-    },
-  ];
+  cards: Array<Product> = []; // Ensure cards is initialized as an empty array
   http = inject(HttpClient);
-  ngOnInit(): void {
-    this.http.get(environment.apiURL + 'products').subscribe((res:any)=>{
-      // this.cards = res.data
-      console.log(res);
+  isLoading = true;
 
-    });
+  async ngOnInit(): Promise<void> {
+    try {
+      const res: any = await lastValueFrom(
+        this.http.get(environment.apiURL + 'products')
+      );
+      this.cards = res || []; // Fallback to an empty array if res.data is undefined
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
+      this.isLoading = false;
+    }
   }
 }

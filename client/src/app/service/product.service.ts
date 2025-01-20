@@ -9,17 +9,37 @@ import { Product } from '../interface/product';
 })
 export class ProductService {
   http = inject(HttpClient);
-  httpHeaders: HttpHeaders = new HttpHeaders({
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
-  });
 
-  getProduct(): Observable<any> {
-    return this.http.get(environment.apiURL + 'products');
+  getHttpHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    return new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
   }
 
-  addProduct(model: Product): Observable<any> {
-    return this.http.post(environment.apiURL + 'products', model, {
-      headers: this.httpHeaders,
+  getProduct(): Observable<any> {
+    return this.http.get(environment.apiURL + 'products', {
+      headers: this.getHttpHeaders(),
+    });
+  }
+
+  addProduct(formData: FormData): Observable<any> {
+    return this.http.post(environment.apiURL + 'products', formData, {
+      headers: this.getHttpHeaders(),
+    });
+  }
+  updateProduct(productId: string, formData: FormData): Observable<any> {
+    return this.http.put(
+      `${environment.apiURL}products/${productId}`,
+      formData,
+      {
+        headers: this.getHttpHeaders(),
+      }
+    );
+  }
+  deleteProduct(productId: string): Observable<any> {
+    return this.http.delete(`${environment.apiURL}products/${productId}`, {
+      headers: this.getHttpHeaders(),
     });
   }
 }
