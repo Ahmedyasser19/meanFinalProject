@@ -17,7 +17,28 @@ const productSchema = Joi.object({
     "number.positive": "Price must be a positive number",
     "any.required": "Price is required",
   }),
-  imageUrl: Joi.string().uri().required().messages({
+  imageUrl: Joi.string().uri().messages({
+    "string.uri": "Image URL must be a valid URI",
+    "any.required": "Image URL is required",
+  }),
+});
+
+const EditProductSchema = Joi.object({
+  name: Joi.string().min(3).max(100).messages({
+    "string.min": "Product name must be at least 3 characters long",
+    "string.max": "Product name must not exceed 100 characters",
+    "any.required": "Product name is required",
+  }),
+  desc: Joi.string().min(10).max(500).messages({
+    "string.min": "Description must be at least 10 characters long",
+    "string.max": "Description must not exceed 500 characters",
+    "any.required": "Description is required",
+  }),
+  price: Joi.number().positive().messages({
+    "number.positive": "Price must be a positive number",
+    "any.required": "Price is required",
+  }),
+  imageUrl: Joi.string().uri().messages({
     "string.uri": "Image URL must be a valid URI",
     "any.required": "Image URL is required",
   }),
@@ -65,7 +86,7 @@ export async function updateProduct(req, res) {
     const ownerId = req.user.id; // `req.user` is set by middleware
 
     // Validate input
-    const { error } = productSchema.validate(req.body);
+    const { error } = EditProductSchema.validate(req.body);
     if (error) {
       return res.status(400).json({ error: error.details[0].message });
     }
@@ -82,13 +103,22 @@ export async function updateProduct(req, res) {
     if (getProductDetails.owner.toString() !== ownerId) {
       return res.status(403).json({ message: "You do not own this product" });
     }
-
-    // Proceed with updating the product details
+    // Extract fields from request body
     const { name, desc, price, imageUrl } = req.body;
+
+    // Create an update object, preserving existing fields if not provided
+    const updateData = {
+      name: name || getProductDetails.name,
+      desc: desc || getProductDetails.desc,
+      price: price || getProductDetails.price,
+      imageUrl: imageUrl || getProductDetails.imageUrl,
+    };
+
+    // Update the product
     const updatedProduct = await productModel.findByIdAndUpdate(
       productId,
-      { name, desc, price, imageUrl },
-      { new: true }
+      updateData,
+      { new: true } // Return the updated product
     );
 
     // Send the updated product in the response

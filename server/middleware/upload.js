@@ -44,40 +44,38 @@ const upload = multer({
   to be passed to the db 
 */
 export default async function uploadImage(req, res, next) {
-  try {
-    const uploadSingle = upload.single("image");
+  const uploadSingle = upload.single("image");
 
-    uploadSingle(req, res, async (err) => {
-      if (err) {
-        return res.status(400).json({ error: "Multer error: " + err.message });
-      }
+  uploadSingle(req, res, async (err) => {
+    if (err) {
+      return res.status(400).json({ error: "Multer error: " + err.message });
+    }
 
-      if (!req.file) {
-        return res.status(400).json({ error: "No file uploaded" });
-      }
+    if (!req.file) {
+      // If no file, just pass the request to the next middleware
+      return next();
+    }
 
-      const filePath = req.file.path;
+    const filePath = req.file.path;
 
-      try {
-        const uploadResult = await cloudinary.uploader.upload(filePath, {
-          folder: "home/finalProject", // Replace with your desired Cloudinary folder
-        });
+    try {
+      // Upload image to Cloudinary
+      const uploadResult = await cloudinary.uploader.upload(filePath, {
+        folder: "home/finalProject", // Replace with your desired Cloudinary folder
+      });
 
-        // Delete the temporary file from the server
-        await fs.unlink(filePath);
+      // Delete the temporary file from the server
+      await fs.unlink(filePath);
 
-        // Pass the Cloudinary URL to the next middleware
-        req.body.imageUrl = uploadResult.secure_url;
-        next();
-      } catch (cloudError) {
-        // Delete the temporary file if Cloudinary upload fails
-        await fs.unlink(filePath);
-        return res.status(500).json({
-          error: "Cloudinary upload failed: " + cloudError.message,
-        });
-      }
-    });
-  } catch (error) {
-    res.status(500).json({ error: "Server error: " + error.message });
-  }
+      // Attach the Cloudinary URL to req.body
+      req.body.imageUrl = uploadResult.secure_url;
+      next();
+    } catch (cloudError) {
+      // Delete the temporary file if Cloudinary upload fails
+      await fs.unlink(filePath);
+      return res.status(500).json({
+        error: "Cloudinary upload failed: " + cloudError.message,
+      });
+    }
+  });
 }
