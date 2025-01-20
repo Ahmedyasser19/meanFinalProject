@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+﻿import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
@@ -9,9 +9,13 @@ import { Product } from '../interface/product';
 })
 export class ProductService {
   http = inject(HttpClient);
-  httpHeaders: HttpHeaders = new HttpHeaders({
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
-  });
+
+  getHttpHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    return new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+  }
 
   getAllProducts(): Observable<any> {
     return  this.http.get(environment.apiURL + 'products');
@@ -21,13 +25,13 @@ export class ProductService {
     return  this.http.get(environment.apiURL + 'products/'+id);
   }
 
-  addProduct(model: Product): Observable<any> {
-    return model._id
-      ? this.http.put(environment.apiURL + 'products/' + model._id, model, {
-          headers: this.httpHeaders,
+    addProduct(productId?: stringو model: FormData): Observable<any> {
+        return productId
+            ? this.http.put(environment.apiURL + 'products/' + productId, model, {
+                headers: this.getHttpHeaders(),
         })
       : this.http.post(environment.apiURL + 'products', model, {
-          headers: this.httpHeaders,
+          headers: this.getHttpHeaders(),
         });
   }
 }

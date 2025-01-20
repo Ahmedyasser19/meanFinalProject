@@ -8,17 +8,20 @@ import {
 } from '@angular/forms';
 import { ProductService } from '../../service/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-add-product',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule, NgIf],
   templateUrl: './add-product.component.html',
   styleUrl: './add-product.component.css',
 })
 export class AddProductComponent implements OnInit {
+  file: File | null = null;
   imageUrl: string | ArrayBuffer | null = null;
-  profile: any;
+  errorMessage: string = ''; // Variable to store error messages
+  successMessage: string = ''; // Variable to store success messages
 
   productForm!: FormGroup;
   constructor(
@@ -29,24 +32,11 @@ export class AddProductComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.profile = localStorage.getItem('porofile');
-    this.route.params.subscribe({
-      next: (params: any) => {
-        const id = params.id;
-        this.productForm = this.formBulder.group({
-          _id: [null, []],
-          name: [null, [Validators.required]],
-          desc: [null, []],
-          price: [null, [Validators.required]],
-          imageUrl: [null, []],
-          owner: [JSON.parse(this.profile)['id'], [Validators.required]],
-        });
-        if (id) {
-          this.productSer.getProduct(id).subscribe((response) => {
-            this.productForm.patchValue(response);
-          });
-        }
-      },
+    this.productForm = this.formBulder.group({
+      name: ['', [Validators.required]],
+      desc: ['', []],
+      price: ['', [Validators.required]],
+      file: ['', []],
     });
   }
 
@@ -54,31 +44,47 @@ export class AddProductComponent implements OnInit {
     const input = event.target as HTMLInputElement;
 
     if (input.files && input.files[0]) {
-      const file = input.files[0];
+      this.file = input.files[0];
 
       const reader = new FileReader();
       reader.onload = () => {
-        this.imageUrl = reader.result; // Set the imageUrl to the file's data URL
+        this.imageUrl = reader.result;
       };
-      reader.readAsDataURL(file); // Read the file as a Data URL
+      reader.readAsDataURL(this.file);
     }
   }
 
   onSubmit() {
-    console.log(this.productForm.value);
-
     if (this.productForm.valid) {
-      this.productSer.addProduct(this.productForm.value).subscribe(
+      const formData = new FormData();
+      formData.append('name', this.productForm.get('name')?.value);
+      formData.append('price', this.productForm.get('price')?.value);
+      formData.append('desc', this.productForm.get('desc')?.value);
+      // formData.append('owner', this.productForm.get('owner')?.value);
+
+      if (this.file) {
+        formData.append('image', this.file);
+      }
+
+      this.productSer.addProduct(formData).subscribe(
         (res: any) => {
-          console.log(res);
+          this.successMessage = 'Product added successfully!';
+          this.errorMessage = '';
+          this.productForm.reset();
+          this.imageUrl = null;
         },
         (error) => {
-         if(error.status == 403){
-          localStorage.clear();
-          this.router.navigateByUrl("/login")
-         }
+          if (error.status === 401) {
+            this.errorMessage = 'Unauthorized. Please log in again.';
+          } else {
+            this.errorMessage =
+              error.error?.message || 'An error occurred. Please try again.';
+          }
+          this.successMessage = '';
         }
       );
+    } else {
+      this.errorMessage = 'Please fill out all required fields.';
     }
   }
 }
