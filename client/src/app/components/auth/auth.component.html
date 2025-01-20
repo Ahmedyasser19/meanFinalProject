@@ -2,30 +2,14 @@
   <h1 style="margin: 0 auto">{{ receiveName }}</h1>
   <div>
     <label for="email">Email</label>
-    <input
-      id="email"
-      type="text"
-      placeholder="email"
-      name="email"
-      formControlName="email"
-    />
+    <input id="email" type="text" placeholder="email" name="email" formControlName="email" />
   </div>
 
   <div>
     <label for="password">Password</label>
-    <input
-      type="password"
-      placeholder="password"
-      name="pw"
-      formControlName="pw"
-    />
-    <input
-      *ngIf="isRegistering"
-      type="password"
-      placeholder="confirm password"
-      formControlName="pw2"
-      style="margin-top: 5px"
-    />
+    <input type="password" placeholder="password" name="pw" formControlName="pw" />
+    <input *ngIf="isRegistering" type="password" placeholder="confirm password" formControlName="pw2"
+      style="margin-top: 5px" />
     <div *ngIf="passwordMismatch" class="error-message">
       Passwords do not match.
     </div>
@@ -37,5 +21,6 @@
   </p>
 
   <button type="submit" [disabled]="authForm.invalid">{{ receiveName }}</button>
-  <p>dont have an account? <a [routerLink]="['/register']">Register</a></p>
+  <p>dont have an account? <a
+      [routerLink]="receiveName!='Register'?'/register':'/login'">{{receiveName!='Register'?'Register':'Login'}}</a></p>
 </form>

@@ -1,8 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
-  FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
@@ -16,7 +15,7 @@ import { environment } from '../../../environments/environment.development';
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [NgIf, CommonModule, ReactiveFormsModule, FormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterLink],
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.css',
 })
@@ -62,8 +61,8 @@ export class AuthComponent {
     if (this.authForm.valid) {
       const authEndpoint = this.isRegistering ? 'auth/register' : 'auth/login';
       const { pw2, ...formData } = this.authForm.value; // Remove pw2 for backend
-      this.http.post(environment.apiURL + authEndpoint, formData).subscribe(
-        (res: any) => {
+      this.http.post(environment.apiURL + authEndpoint, formData).subscribe({
+        next: (res: any) => {
           localStorage.setItem('token', res.user.token);
           localStorage.setItem('email', res.user.email);
           localStorage.setItem('id', res.user.id);
@@ -74,12 +73,12 @@ export class AuthComponent {
             this.router.navigate(['/products']);
           }
         },
-        (error) => {
+        error: (error) => {
           // Capture and display the error message from the backend
           this.errorMessage =
             error.error?.error || 'An error occurred. Please try again.';
-        }
-      );
+        },
+      });
     }
   }
 
